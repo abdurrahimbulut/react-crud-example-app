@@ -25,9 +25,20 @@ function App() {
     }
   ]);
 
+  const [name,setName] = useState('');
+  const [surname,setSurname] = useState('');
+  const [age,setAge] = useState('');
 
-  const handleAddUser = (name,surname,age) => {
-      
+
+
+  const handleAddUser = (e) => {
+      e.preventDefault();
+      setUser([
+        ... users,
+        {
+          name,surname,age
+        }
+      ])
   }
 
 
@@ -47,19 +58,19 @@ function App() {
             <Col>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" name="name" placeholder="Enter name" />
+                <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter name" />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Surname</Form.Label>
-                <Form.Control type="text" name="surname" placeholder="Enter Surname" />
+                <Form.Control type="text" value={surname} onChange={(e) => setSurname(e.target.value)} placeholder="Enter Surname" />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Age</Form.Label>
-                <Form.Control type="text" name="age" placeholder="Enter Age" />
+                <Form.Control type="text" value={age} onChange={(e) => setAge(e.target.value)} placeholder="Enter Age" />
               </Form.Group>
             </Col>
 
