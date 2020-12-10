@@ -1,24 +1,20 @@
-import { Table, Button, Form, Col, Row } from 'react-bootstrap';
+import { Table, Button, Form, Col, Row ,FormControl} from 'react-bootstrap';
 import React, { useState } from 'react';
 
 function App() {
 
-  const [users, setUser] = useState([
+  const [users, setUsers] = useState([
     {
-      id: 1,
       name: "Abdurrahim",
       surname: "Bulut",
       age: 22
     },
     {
-      id: 2,
       name: "Abdullah",
       surname: "Bulut",
       age: 22
-    }
-    ,
+    },
     {
-      id: 3,
       name: "Barış",
       surname: "Yılmaz",
       age: 22
@@ -29,11 +25,16 @@ function App() {
   const [surname,setSurname] = useState('');
   const [age,setAge] = useState('');
 
+  //update
+  const [updateKey,setUpdateKey] = useState(null);
+  const [updatingName,setUpdatingName] = useState('');
+  const [updatingSurname,setUpdatingSurname] = useState('');
+  const [updatingAge,setUpdatingAge] = useState('');
 
 
   const handleAddUser = (e) => {
       e.preventDefault();
-      setUser([
+      setUsers([
         ... users,
         {
           name,surname,age
@@ -41,6 +42,13 @@ function App() {
       ])
   }
 
+  const handleRemove = (userKey) =>{
+    setUsers(users.filter((user,key)=> key !== userKey));
+  }
+
+  const handleUpdate=(updatingUserKey)=>{
+    setUpdateKey(updatingUserKey);
+  }
 
   return (
     <div className="App">
@@ -96,12 +104,42 @@ function App() {
           </thead>
           <tbody>
             {
-              users.map(user => (
-                  <tr key={user.id} >
-                    <td>{user.name}</td>
-                    <td>{user.surname}</td>
-                    <td>{user.age}</td>
-                    <td style={{width:"15%"}} ><Button>Edit</Button><Button variant="danger" >Delete</Button></td>
+              users.map((user,key) => (
+               
+                  <tr key={key} >
+
+                    {(updateKey !== key ) ?
+                      (
+                        <td>{user.name}</td>
+                      ):
+                      (
+                        <td><FormControl value={user.name}  onChange={(e) => setUpdatingName(e.target.value)} /></td>
+
+                      )
+                    }
+
+                    {(updateKey !== key ) ?
+                      (
+                        <td>{user.surname}</td>
+                      ):
+                      (
+                        <td><FormControl value={user.surname} onChange={(e) => setUpdatingSurname(e.target.value)} /></td>
+                      )
+                    }
+                    
+                    {(updateKey !== key ) ?
+                      (
+                        <td>{user.age}</td>
+                      ):
+                      (
+                        <td><FormControl value={user.age} onChange={(e) => setUpdatingAge(e.target.value)} /></td>
+                      )
+                    }
+
+                    <td style={{width:"15%"}} >
+                      <Button onClick={()=>handleUpdate(key)}>Edit</Button>
+                      <Button variant="danger" onClick={() => handleRemove(key)} >Delete</Button>
+                    </td>
                   </tr>
                 )
               )
