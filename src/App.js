@@ -55,7 +55,9 @@ function App() {
 
   const handleUpdateComplete=(updatingUserKey)=>{
     users[updatingUserKey] = {
-      name:updatingName,surname:updatingSurname,age:updatingAge
+      name:updatingName,
+      surname:updatingSurname,
+      age:updatingAge
     };
     setUpdateKey(null);
   }
