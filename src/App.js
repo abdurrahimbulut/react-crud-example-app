@@ -46,9 +46,24 @@ function App() {
     setUsers(users.filter((user,key)=> key !== userKey));
   }
 
-  const handleUpdate=(updatingUserKey)=>{
+  const handleUpdate=(updatingUserKey,UpdatingUser)=>{
     setUpdateKey(updatingUserKey);
+    setUpdatingName(UpdatingUser.name);
+    setUpdatingSurname(UpdatingUser.surname);
+    setUpdatingAge(UpdatingUser.age);
   }
+
+  const handleUpdateComplete=(updatingUserKey)=>{
+    users[updatingUserKey] = {
+      name:updatingName,surname:updatingSurname,age:updatingAge
+    };
+    setUpdateKey(null);
+  }
+
+  const handleUpdateCancel=()=>{
+    setUpdateKey(null);
+  }
+
 
   return (
     <div className="App">
@@ -113,7 +128,7 @@ function App() {
                         <td>{user.name}</td>
                       ):
                       (
-                        <td><FormControl value={user.name}  onChange={(e) => setUpdatingName(e.target.value)} /></td>
+                        <td><FormControl value={updatingName}  onChange={(e) => setUpdatingName(e.target.value)} /></td>
 
                       )
                     }
@@ -123,7 +138,7 @@ function App() {
                         <td>{user.surname}</td>
                       ):
                       (
-                        <td><FormControl value={user.surname} onChange={(e) => setUpdatingSurname(e.target.value)} /></td>
+                        <td><FormControl value={updatingSurname} onChange={(e) => setUpdatingSurname(e.target.value)} ></FormControl></td>
                       )
                     }
                     
@@ -132,14 +147,25 @@ function App() {
                         <td>{user.age}</td>
                       ):
                       (
-                        <td><FormControl value={user.age} onChange={(e) => setUpdatingAge(e.target.value)} /></td>
+                        <td><FormControl value={updatingAge} onChange={(e) => setUpdatingAge(e.target.value)} /></td>
                       )
                     }
 
-                    <td style={{width:"15%"}} >
-                      <Button onClick={()=>handleUpdate(key)}>Edit</Button>
-                      <Button variant="danger" onClick={() => handleRemove(key)} >Delete</Button>
-                    </td>
+                    {(updateKey !== key ) ?
+                      (
+                        <td style={{width:"15%"}} >
+                          <Button onClick={()=>handleUpdate(key,user)}>Edit</Button>
+                          <Button variant="danger" onClick={() => handleRemove(key)} >Delete</Button>
+                        </td>
+                      ):
+                      (
+                        <td style={{width:"15%"}} >
+                          <Button variant="success" onClick={()=>handleUpdateComplete(key)}>Save</Button>
+                          <Button variant="danger" onClick={() => handleUpdateCancel()} >Cancel</Button>
+                        </td>
+                      )
+                    }
+
                   </tr>
                 )
               )
